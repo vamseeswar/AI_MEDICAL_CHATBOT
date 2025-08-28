@@ -125,7 +125,7 @@
                 submitQuery.disabled = true;
                 submitQuery.textContent = 'Processing... ⏳';
 
-                const response = await fetch('https://ai-medical-chatbot-ytd3.onrender.com', {
+                const response = await fetch('https://ai-medical-chatbot-ytd3.onrender.com/upload_and_query', {
                     method: 'POST',
                     body: formData
                 });
