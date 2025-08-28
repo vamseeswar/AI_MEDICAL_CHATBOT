@@ -132,9 +132,9 @@ async def upload_and_query(
         logger.error(f"An unexpected error occurred: {str(e)}")
         raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {str(e)}")
 
-
+'''
 # ---------------- Run Server ----------------
 if __name__ == "__main__":
     import uvicorn
     # ✅ make sure app is used here
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True) '''
