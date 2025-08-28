@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 load_dotenv()
 
-api = FastAPI()
+app = FastAPI()
 
 templates = Jinja2Templates(directory="templates")
 
