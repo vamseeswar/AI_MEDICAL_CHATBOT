@@ -9,12 +9,15 @@ from dotenv import load_dotenv
 import os
 import logging
 
+# ---------------- Logging ----------------
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(_name_)
 
+# ---------------- Load environment variables ----------------
 load_dotenv()
 
-main = FastAPI()
+# ✅ Define app once
+app = FastAPI()
 
 templates = Jinja2Templates(directory="templates")
 
@@ -25,15 +28,17 @@ if not GROQ_API_KEY:
     raise ValueError("GROQ_API_KEY is not set in the .env file")
 
 
+# ---------------- Root Route ----------------
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
+# ---------------- Upload & Query Route ----------------
 @app.post("/upload_and_query")
 async def upload_and_query(
-    image: UploadFile = File(None),  # optional now
-    query: str = Form(None)          # optional now
+    image: UploadFile = File(None),  # optional
+    query: str = Form(None)          # optional
 ):
     try:
         if not image and not query:
@@ -50,7 +55,7 @@ async def upload_and_query(
 
             encoded_image = base64.b64encode(image_content).decode("utf-8")
 
-            # Validate image
+            # Validate image format
             try:
                 img = Image.open(io.BytesIO(image_content))
                 img.verify()
@@ -67,10 +72,14 @@ async def upload_and_query(
         if query:
             content.append({"type": "text", "text": query})
         if encoded_image:
-            content.append({"type": "image_url", "image_url": {"url": f"data:{mime_type};base64,{encoded_image}"}})
+            content.append({
+                "type": "image_url",
+                "image_url": {"url": f"data:{mime_type};base64,{encoded_image}"}
+            })
 
         messages = [{"role": "user", "content": content}]
 
+        # Function to make Groq API requests
         def make_api_request(model):
             try:
                 response = requests.post(
@@ -91,11 +100,11 @@ async def upload_and_query(
                 logger.error(f"Request failed for model {model}: {str(e)}")
                 return None
 
-        # ✅ Use new supported Groq models
+        # ✅ Use Groq models
         scout_response = make_api_request("meta-llama/llama-4-scout-17b-16e-instruct")
         maverick_response = make_api_request("meta-llama/llama-4-maverick-17b-128e-instruct")
 
-        responses = {"llama": "⚠️ No response", "llava": "⚠️ No response"}
+        responses = {"llama": "⚠ No response", "llava": "⚠ No response"}
 
         for key, response in [
             ("llama", scout_response),
@@ -124,6 +133,8 @@ async def upload_and_query(
         raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {str(e)}")
 
 
-if __name__ == "__main__":
+# ---------------- Run Server ----------------
+if _name_ == "_main_":
     import uvicorn
-    uvicorn.run(app,host="0.0.0.0", port=8000)
+    # ✅ make sure app is used here
+    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
