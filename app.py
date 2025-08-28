@@ -11,7 +11,7 @@ import logging
 
 # ---------------- Logging ----------------
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(_name_)
+logger = logging.getLogger(__name__)
 
 # ---------------- Load environment variables ----------------
 load_dotenv()
@@ -132,9 +132,9 @@ async def upload_and_query(
         logger.error(f"An unexpected error occurred: {str(e)}")
         raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {str(e)}")
 
-'''
+
 # ---------------- Run Server ----------------
 if __name__ == "__main__":
     import uvicorn
     # ✅ make sure app is used here
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True) '''
+    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True) 
