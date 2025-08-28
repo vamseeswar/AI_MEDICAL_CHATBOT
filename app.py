@@ -52,9 +52,12 @@ async def read_root(request: Request):
 # ---------------- Upload & Query Route ----------------
 @app.post("/upload_and_query")
 async def upload_and_query(
-    image: UploadFile = File(None),  # optional
-    query: str = Form(None)          # optional
+    image: UploadFile = File(...),  # optional
+    query: str = Form(...)          # optional
 ):
+    return {"response":f"Received query: {query}"}
+
+
     try:
         if not image and not query:
             raise HTTPException(status_code=400, detail="Provide at least an image or a query.")
