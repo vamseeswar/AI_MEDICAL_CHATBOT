@@ -11,8 +11,9 @@ import logging
 # main.py (FastAPI backend)
 from fastapi.middleware.cors import CORSMiddleware
 
+app = FastAPI()
 origins = [
-    " https://vamseeswar.github.io/AI_MEDICAL_CHATBOT/",  # your frontend URL
+    " https://vamseeswar.github.io",  # your frontend URL
 ]
 
 app.add_middleware(
@@ -31,7 +32,7 @@ logger = logging.getLogger(__name__)
 load_dotenv()
 
 # ✅ Define app once
-app = FastAPI()
+#app = FastAPI()
 
 templates = Jinja2Templates(directory="templates")
 
