@@ -8,6 +8,20 @@ from PIL import Image
 from dotenv import load_dotenv
 import os
 import logging
+# main.py (FastAPI backend)
+from fastapi.middleware.cors import CORSMiddleware
+
+origins = [
+    " https://vamseeswar.github.io/AI_MEDICAL_CHATBOT/",  # your frontend URL
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # ---------------- Logging ----------------
 logging.basicConfig(level=logging.INFO)
